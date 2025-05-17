@@ -5,8 +5,8 @@ document.addEventListener("DOMContentLoaded", () => {
     "crafted with a designer’s vision",
     "and a writer’s touch"
   ];
-  const speed = 20;
-  const startDelay = 1000;
+  const speed = 25;
+  const startDelay = 1200;
   // existing code...
 
 // menu logic
