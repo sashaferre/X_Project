@@ -21,22 +21,35 @@
   font-size: 20px;
   font-weight: 500;
   cursor: pointer;
-  color: #111;
+  color: #2f2f2f;
   transform: translateX(-100px); /* ← shift it left */
 }
 
 .menu-overlay {
   position: fixed;
   inset: 0;
-  background-color: #1a1818;
-  display: none;
+  display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-end;
   justify-content: center;
+  padding-right: 80px;
   z-index: 200;
-  transition: opacity 0.4s ease;
-  color: #f3f3f0;
-  font-family: 'Parabole', sans-serif; /* Menu text uses Parabole */
+
+  background: rgba(201, 201, 201, 0.06); /* transparent light layer */
+  backdrop-filter: blur(24px) saturate(180%);
+  -webkit-backdrop-filter: blur(24px) saturate(180%);
+  border: 1px solid rgba(137, 137, 137, 0.12); /* subtle border like glass */
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.15); /* soft inner glow */
+
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.4s ease, visibility 0.4s ease;
+  font-family: 'Parabole', sans-serif;
+  color: #c1c1c1;
+}
+.menu-overlay.open {
+  opacity: 1;
+  visibility: visible;
 }
 
 .menu-overlay.open {
@@ -46,25 +59,50 @@
 .menu-close {
   position: absolute;
   top: 40px;
-  right: 40px;
+  right: 60px;
   font-size: 36px;
   cursor: pointer;
+  color: #222222;
 }
 
 .menu-links {
   display: flex;
   flex-direction: column;
   gap: 40px;
+  align-items: flex-end;
+}
+
+
+.menu-overlay.open .menu-links a {
+  animation-play-state: running;
+}
+
+@keyframes fadeSlideIn {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
 .menu-links a {
   font-size: 48px;
-  color: #f3f3f0;
+  color: rgba(32, 32, 32, 0.96); /* Light but readable */
+  text-shadow:
+    0 0 4px rgba(255, 255, 255, 0.5),
+    0 0 12px rgba(139, 139, 139, 0.2);  /* depth effect */
   text-decoration: none;
+  opacity: 0;
+  transform: translateX(40px);
+  animation: fadeSlideIn 0.4s ease-out forwards;
+  animation-delay: var(--delay, 0s);
+  transition: transform 0.3s ease, text-shadow 0.3s ease;
 }
 
 .menu-links a:hover {
-  text-decoration: underline;
+  transform: translateX(4px);
+  text-shadow:
+    0 0 6px rgba(83, 83, 83, 0.8),
+    0 0 20px rgba(255, 255, 255, 0.4);
 }
 .line {
   opacity: 0;
@@ -75,4 +113,27 @@
 .line.visible {
   opacity: 1;
   transform: translateY(0);
+}
+.menu-overlay::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(255, 255, 255, 0.06),
+    transparent 60%
+  );
+  animation: shimmer 5s infinite alternate ease-in-out;
+  pointer-events: none;
+  z-index: -1;
+  border-radius: 20px;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 100% 50%;
+  }
 }
