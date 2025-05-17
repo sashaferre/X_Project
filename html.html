@@ -1,38 +1,117 @@
+<!-- STEP 1: HTML -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <link rel="stylesheet" href="menu.css" />
   <meta charset="UTF-8" />
-  <title>My Site</title>
-  <link rel="stylesheet" href="styles.css" />
+  <title>Canvas Scroll Animation</title>
+  <style>
+    * {
+      box-shadow: none !important;
+      outline: none !important;
+      border: none !important;
+    }
+    html, body {
+      background-color: #FCFCFF;
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+    }
+    .site-name {
+      font-size: 14px;
+      font-weight: 400;
+      color: white;
+      text-transform: uppercase;
+    }
+    .nav-item {
+      font-size: 14px;
+      font-weight: 400;
+      text-transform: uppercase;
+      text-decoration: none;
+      color: white;
+      padding: 4px 6px;
+      border-radius: 6px;
+      transition: all 0.2s ease-in-out;
+    }
+    .nav-item:hover {
+      background-color: rgba(255, 255, 255, 0.2);
+      color: white;
+    }
+
+    .scroll-canvas-container {
+      height: 5000px;
+      position: relative;
+    }
+
+    canvas#scrollCanvas {
+      position: fixed;
+      top: 25%;
+      left: 10%;
+      width: 80vw;
+      height: 80vh;
+      z-index: 0;
+      background: transparent;
+      pointer-events: none;
+    }
+
+    .animated-text-container {
+      position: fixed;
+      top: 20%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 2;
+      text-align: center;
+      height: 150px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
+    .line {
+      font-family: 'Parabole', sans-serif;
+      font-size: 42px;
+      font-weight: 400;
+      color: black;
+      white-space: nowrap;
+      overflow: hidden;
+      display: block;
+      margin: 2px auto;
+      line-height: 1;
+      min-height: 1em;
+    }
+    @font-face {
+      font-family: 'Parabole';
+      src: url('fonts/Parabole.woff') format('truetype');
+      font-weight: normal;
+      font-style: normal;
+    }
+  </style>
 </head>
 <body>
+ <header class="custom-header">
+  <div class="site-name">Sasha Ferreira</div>
+  <div class="menu-toggle" id="menuToggle">MENU</div>
+</header>
 
-  <div class="header">
-    <div class="site-name">KIRILL PICHUGIN</div>
-    <nav class="nav-links">
-      <a href="#home" class="nav-item">HOME</a>
-      <a href="#projects" class="nav-item">PROJECTS</a>
-      <a href="#contact" class="nav-item">CONTACT</a>
-    </nav>
-  </div>
+<div class="menu-overlay" id="menuOverlay">
+  <div class="menu-close" id="menuClose">&times;</div>
+  <nav class="menu-links">
+    <a href="#home">Home →</a>
+    <a href="#work">Work →</a>
+    <a href="#contact">Contact →</a>
+  </nav>
+</div>
 
-  <section class="hero">
-    <div class="hero-wrapper">
-      <div class="video-wrapper">
-        <video autoplay muted playsinline>
-          <source src="videos/OpeningAnimation.mp4" type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
-      </div>
-
-      <div class="animated-text-container">
-        <div class="line" id="line1"></div>
-        <div class="line" id="line2"></div>
-        <div class="line" id="line3"></div>
-      </div>
-    </div>
+  <section class="scroll-canvas-container">
+    <canvas id="scrollCanvas"></canvas>
   </section>
+
+  <div class="animated-text-container">
+    <div class="line" id="line1"></div>
+    <div class="line" id="line2"></div>
+    <div class="line" id="line3"></div>
+  </div>
 
   <script src="script.js"></script>
 </body>
-</html>ß
+</html>
+
