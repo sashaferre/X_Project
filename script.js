@@ -7,20 +7,6 @@ document.addEventListener("DOMContentLoaded", () => {
   ];
   const speed = 25;
   const startDelay = 1200;
-  // existing code...
-
-// menu logic
-const menuToggle = document.getElementById('menuToggle');
-const menuOverlay = document.getElementById('menuOverlay');
-const menuClose = document.getElementById('menuClose');
-
-menuToggle.addEventListener('click', () => {
-  menuOverlay.classList.add('open');
-});
-
-menuClose.addEventListener('click', () => {
-  menuOverlay.classList.remove('open');
-});
 
   const animateLine = (index) => {
     const el = document.getElementById(`line${index + 1}`);
@@ -49,6 +35,19 @@ menuClose.addEventListener('click', () => {
     if (header) header.style.opacity = "1";
   }, 11350);
 
+  // 🧠 Menu Logic
+  const menuToggle = document.getElementById('menuToggle');
+  const menuOverlay = document.getElementById('menuOverlay');
+  const menuClose = document.getElementById('menuClose');
+
+  menuToggle.addEventListener('click', () => {
+    menuOverlay.classList.add('open');
+  });
+
+  menuClose.addEventListener('click', () => {
+    menuOverlay.classList.remove('open');
+  });
+
   // ✨ Canvas Scroll Animation
   const canvas = document.getElementById("scrollCanvas");
   const ctx = canvas.getContext("2d");
@@ -60,13 +59,18 @@ menuClose.addEventListener('click', () => {
     return new Promise((resolve) => {
       for (let i = 1; i <= frameCount; i++) {
         const img = new Image();
-        img.src = `frames/frame${i}.gif`;
+        img.src = `frames/frame_${String(i).padStart(3, '0')}.png`;
+
         img.onload = () => {
+          console.log(`✅ Loaded: ${img.src}`);
           loadedImages++;
-          if (loadedImages === frameCount) {
-            resolve();
-          }
+          if (loadedImages === frameCount) resolve();
         };
+
+        img.onerror = () => {
+          console.error(`❌ Failed to load: ${img.src}`);
+        };
+
         images.push(img);
       }
     });
@@ -77,17 +81,29 @@ menuClose.addEventListener('click', () => {
     canvas.height = window.innerHeight;
   };
 
-  const renderFrame = (index) => {
-    const img = images[index];
-    const scale = Math.min(
-      canvas.width / img.width,
-      canvas.height / img.height
-    );
-    const x = (canvas.width - img.width * scale) / 2;
-    const y = (canvas.height - img.height * scale) / 2;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(img, x, y, img.width * scale, img.height * scale);
-  };
+const renderFrame = (index) => {
+  const img = images[index];
+  const canvasAspect = canvas.width / canvas.height;
+  const imgAspect = img.width / img.height;
+
+  let drawWidth, drawHeight;
+
+  if (imgAspect > canvasAspect) {
+    // Image is wider than canvas
+    drawWidth = canvas.width;
+    drawHeight = canvas.width / imgAspect;
+  } else {
+    // Image is taller than canvas
+    drawHeight = canvas.height;
+    drawWidth = canvas.height * imgAspect;
+  }
+
+  const x = (canvas.width - drawWidth) / 2;
+  const y = (canvas.height - drawHeight) / 2;
+
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.drawImage(img, x, y, drawWidth, drawHeight);
+};
 
   const setupScroll = () => {
     const scrollContainer = document.querySelector(".scroll-canvas-container");
@@ -96,9 +112,9 @@ menuClose.addEventListener('click', () => {
     window.addEventListener("scroll", () => {
       const scrollTop = window.scrollY;
       const relativeScroll = Math.max(0, Math.min(scrollTop, totalHeight));
-    const progress = relativeScroll / totalHeight;
-    const easedProgress = Math.pow(progress, 0.9); // ✨ easing for smoothness
-    const frameIndex = Math.floor(easedProgress * (frameCount - 1));
+      const progress = relativeScroll / totalHeight;
+      const easedProgress = Math.pow(progress, 0.9);
+      const frameIndex = Math.floor(easedProgress * (frameCount - 1));
       renderFrame(frameIndex);
     });
   };
@@ -113,17 +129,19 @@ menuClose.addEventListener('click', () => {
     renderFrame(0);
     setupScroll();
   });
+
+  // ✨ Reveal text when scrolling
+  const animatedLines = document.querySelectorAll('.line');
+
+  const revealOnScroll = () => {
+    animatedLines.forEach((line) => {
+      const rect = line.getBoundingClientRect();
+      if (rect.top < window.innerHeight * 0.8) {
+        line.classList.add('visible');
+      }
+    });
+  };
+
+  window.addEventListener('scroll', revealOnScroll);
+  window.addEventListener('load', revealOnScroll);
 });
-const lines = document.querySelectorAll('.line');
-
-const revealOnScroll = () => {
-  lines.forEach((line) => {
-    const rect = line.getBoundingClientRect();
-    if (rect.top < window.innerHeight * 0.8) {
-      line.classList.add('visible');
-    }
-  });
-};
-
-window.addEventListener('scroll', revealOnScroll);
-window.addEventListener('load', revealOnScroll); // in case they’re already in view

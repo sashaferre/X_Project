@@ -13,7 +13,7 @@
 
 .custom-header .site-name {
   font-size: 20px;
-  color: #111;
+  color: #f0f0f0;;
   font-weight: 500;
 }
 
@@ -21,7 +21,7 @@
   font-size: 20px;
   font-weight: 500;
   cursor: pointer;
-  color: #2f2f2f;
+  color: #f0f0f0;;
   transform: translateX(-100px); /* ← shift it left */
 }
 
@@ -35,17 +35,17 @@
   padding-right: 80px;
   z-index: 200;
 
-  background: rgba(201, 201, 201, 0.06); /* transparent light layer */
-  backdrop-filter: blur(24px) saturate(180%);
-  -webkit-backdrop-filter: blur(24px) saturate(180%);
-  border: 1px solid rgba(137, 137, 137, 0.12); /* subtle border like glass */
-  box-shadow: 0 0 30px rgba(0, 0, 0, 0.15); /* soft inner glow */
+  background: rgba(255, 255, 255, 0.025); /* subtle mist */
+  backdrop-filter: blur(40px) saturate(180%);
+  -webkit-backdrop-filter: blur(40px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: inset 0 0 30px rgba(255, 255, 255, 0.02);
 
+  font-family: 'Parabole', sans-serif;
+  color: white;
   opacity: 0;
   visibility: hidden;
   transition: opacity 0.4s ease, visibility 0.4s ease;
-  font-family: 'Parabole', sans-serif;
-  color: #c1c1c1;
 }
 .menu-overlay.open {
   opacity: 1;
@@ -62,7 +62,10 @@
   right: 60px;
   font-size: 36px;
   cursor: pointer;
-  color: #222222;
+  color: #ffffff;
+  text-shadow:
+    0 0 4px rgba(255, 255, 255, 0.5),
+    0 0 12px rgba(255, 255, 255, 0.3);
 }
 
 .menu-links {
@@ -86,23 +89,26 @@
 
 .menu-links a {
   font-size: 48px;
-  color: rgba(32, 32, 32, 0.96); /* Light but readable */
+  color: #ffffff;
   text-shadow:
-    0 0 4px rgba(255, 255, 255, 0.5),
-    0 0 12px rgba(139, 139, 139, 0.2);  /* depth effect */
+    0 0 2px rgba(255, 255, 255, 0.6),
+    0 0 8px rgba(255, 255, 255, 0.2);
+  font-weight: 400;
+  letter-spacing: 1px;
   text-decoration: none;
   opacity: 0;
   transform: translateX(40px);
-  animation: fadeSlideIn 0.4s ease-out forwards;
+  animation: fadeSlideIn 0.5s ease-out forwards;
   animation-delay: var(--delay, 0s);
   transition: transform 0.3s ease, text-shadow 0.3s ease;
 }
 
 .menu-links a:hover {
-  transform: translateX(4px);
+  transform: translateX(6px);
   text-shadow:
-    0 0 6px rgba(83, 83, 83, 0.8),
-    0 0 20px rgba(255, 255, 255, 0.4);
+    0 0 6px rgba(255, 255, 255, 0.9),
+    0 0 20px rgba(255, 255, 255, 0.6),
+    0 0 40px rgba(255, 255, 255, 0.4); /* stronger glow on hover */
 }
 .line {
   opacity: 0;
